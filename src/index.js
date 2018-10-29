@@ -1,6 +1,40 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+const VoteCount = ({count}) => {
+  let voteStr = 'votes'
+  if (count === 1)
+    voteStr = 'vote'
+
+  return (
+    <span>has {count} {voteStr}</span>
+  )
+}
+
+const AnecdoteWithMostVotes = ({ anecdotes, votes }) => {
+  const voteIndices = [...Object.keys(votes)]
+  voteIndices.sort((a,b) => {
+    const votesA = votes[a]
+    const votesB = votes[b]
+    return votesB - votesA
+  })
+  const anecdoteIndex = voteIndices[0]
+  const voteCount = votes[anecdoteIndex]
+  
+  if (voteCount === 0 || !voteCount) {
+    return <div></div>
+  }
+
+  return (
+    <div>
+      <h2>anecdote with most votes</h2>
+      <p>{anecdotes[anecdoteIndex]}<br/>
+        <VoteCount count={voteCount} />
+      </p>  
+    </div>
+  )
+}
+
   
 class App extends React.Component {
   constructor(props) {
@@ -34,9 +68,12 @@ class App extends React.Component {
     return (
       <div>
         <p>{this.props.anecdotes[this.state.selected]}</p>
-        <p>has {getVoteCount()} votes</p>
-        <button onClick={vote}>vote</button>
-        <button onClick={nextAnecdote}>next anecdote</button>
+        <VoteCount count={getVoteCount()} />
+        <div>
+          <button onClick={vote}>vote</button>
+          <button onClick={nextAnecdote}>next anecdote</button>
+        </div>
+        <AnecdoteWithMostVotes anecdotes={anecdotes} votes={this.state.votes} />
       </div>
     )
   }
