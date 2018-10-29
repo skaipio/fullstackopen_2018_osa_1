@@ -36,13 +36,17 @@ const Statistics = ({hyva, neutraali, huono}) => {
 const Button = ({onClick, name}) =>
   <button onClick={onClick}>{ name }</button>
 
-const Palaute = ({lisaaArvosana}) =>
-  <div>
-    <Header name="anna palautetta" />
-    <Button onClick={() => lisaaArvosana('hyva')} name="hyvä"/>
-    <Button onClick={() => lisaaArvosana('neutraali')} name="neutraali"/>
-    <Button onClick={() => lisaaArvosana('huono')} name="huono"/>
-  </div>
+const Palaute = ({lisaaArvosana}) => {
+  const clickHandler = (arvosana) => () => lisaaArvosana(arvosana)
+  return (
+    <div>
+      <Header name="anna palautetta" />
+      <Button onClick={clickHandler('hyva')} name="hyvä"/>
+      <Button onClick={clickHandler('neutraali')} name="neutraali"/>
+      <Button onClick={clickHandler('huono')} name="huono"/>
+    </div>
+  )
+}
 
 class App extends React.Component {
   constructor(props) {
