@@ -1,34 +1,39 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-const Otsikko = ({nimi}) => (
-  <h1>{ nimi }</h1>
+const Header = ({name}) => (
+  <h1>{ name }</h1>
 )
 
-const Osa = ({arvosana, maara}) => (
+const Statistic = ({arvosana, maara}) => (
   <p>{arvosana} {maara}</p>
 )
 
-const Statistiikka = ({hyva = 0, neutraali = 0, huono = 0}) => {
+const Statistics = ({hyva = 0, neutraali = 0, huono = 0}) => {
   const yhteensa = hyva + neutraali + huono
   const keskiarvo = yhteensa !== 0 ? (hyva - huono) / yhteensa : 0
   const positiivisiaProsentti = yhteensa !== 0 ? hyva / yhteensa : 0
   return (
     <div>
-      <Osa arvosana="hyvä" maara={hyva} />
-      <Osa arvosana="neutraali" maara={neutraali} />
-      <Osa arvosana="huono" maara={huono} />
-      <Osa arvosana="keskiarvo" maara={keskiarvo} />
-      <Osa arvosana="positiivisia" maara={positiivisiaProsentti + " %"} />
+      <Header name="statistiikka" />
+      <Statistic arvosana="hyvä" maara={hyva} />
+      <Statistic arvosana="neutraali" maara={neutraali} />
+      <Statistic arvosana="huono" maara={huono} />
+      <Statistic arvosana="keskiarvo" maara={keskiarvo} />
+      <Statistic arvosana="positiivisia" maara={positiivisiaProsentti + " %"} />
     </div>
   )
 }
 
-const Palaute = (props) =>
+const Button = ({onClick, name}) =>
+  <button onClick={onClick}>{ name }</button>
+
+const Palaute = ({lisaaArvosana}) =>
   <div>
-    <button onClick={() => props.lisaaArvosana('hyva')}>hyvä</button>
-    <button onClick={() => props.lisaaArvosana('neutraali')}>neutraali</button>
-    <button onClick={() => props.lisaaArvosana('huono')}>huono</button>
+    <Header name="anna palautetta" />
+    <Button onClick={() => lisaaArvosana('hyva')} name="hyvä"/>
+    <Button onClick={() => lisaaArvosana('neutraali')} name="neutraali"/>
+    <Button onClick={() => lisaaArvosana('huono')} name="huono"/>
   </div>
 
 class App extends React.Component {
@@ -49,11 +54,9 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <Otsikko nimi="anna palautetta" />
+      <div>        
         <Palaute lisaaArvosana={this.lisaaArvosana} />
-        <Otsikko nimi="statistiikka" />
-        <Statistiikka hyva={this.state.hyva} neutraali={this.state.neutraali} huono={this.state.huono} />        
+        <Statistics hyva={this.state.hyva} neutraali={this.state.neutraali} huono={this.state.huono} />        
       </div>
     )
   }
