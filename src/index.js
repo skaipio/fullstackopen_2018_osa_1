@@ -2,53 +2,75 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 const Otsikko = (props) => (
-  <h1>{ props.kurssi }</h1>
+  <h1>{ props.nimi }</h1>
 )
 
 const Osa = (props) => (
-  <p>{props.nimi} {props.tehtavia}</p>
+  <p>{props.arvosana} {props.maara}</p>
 )
 
-const Sisalto = (props) => {
+const Statistiikka = (props) => {
+  const {hyva, neutraali, huono} = props.palautteet
   return (
     <div>
-      <Osa nimi={props.osat[0].nimi} tehtavia={props.osat[0].tehtavia} />
-      <Osa nimi={props.osat[1].nimi} tehtavia={props.osat[1].tehtavia} />
-      <Osa nimi={props.osat[2].nimi} tehtavia={props.osat[2].tehtavia} />
+      <Osa arvosana="hyvä" maara={hyva} />
+      <Osa arvosana="neutraali" maara={neutraali} />
+      <Osa arvosana="huono" maara={huono} />
     </div>
   )
 }
 
-const Yhteensa = (props) => (
-  <p>yhteensä {props.osat[0].tehtavia + props.osat[1].tehtavia + props.osat[2].tehtavia} tehtävää</p>
-)
+const Palaute = (props) =>
+  <div>
+    <button onClick={props.lisaaHyva}>hyvä</button>
+    <button onClick={props.lisaaNeutraali}>neutraali</button>
+    <button onClick={props.lisaaHuono}>huono</button>
+  </div>
 
-const App = () => {
-  const kurssi = {
-    nimi: 'Half Stack -sovelluskehitys',
-    osat: [
-      {
-        nimi: 'Reactin perusteet',
-        tehtavia: 10
-      },
-      {
-        nimi: 'Tiedonvälitys propseilla',
-        tehtavia: 7
-      },
-      {
-        nimi: 'Komponenttien tila',
-        tehtavia: 14
-      }
-    ]
+class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      hyva: 0,
+      neutraali: 0,
+      huono: 0
+    }
   }
 
-  return (
-    <div>
-      <Otsikko kurssi={kurssi.nimi} />
-      <Sisalto osat={kurssi.osat} />
-      <Yhteensa osat={kurssi.osat} />
-    </div>
-  )
+  lisaaHyva = () => {
+    this.setState((prevState) => ({
+      hyva: prevState.hyva + 1,
+      neutraali: prevState.neutraali,
+      huono: prevState.huono
+    }))
+  }
+
+  lisaaNeutraali = () => {
+    this.setState((prevState) => ({
+      hyva: prevState.hyva,
+      neutraali: prevState.neutraali + 1,
+      huono: prevState.huono
+    }))
+  }
+
+  lisaaHuono = () => {
+    this.setState((prevState) => ({
+      hyva: prevState.hyva,
+      neutraali: prevState.neutraali,
+      huono: prevState.huono + 1
+    }))
+  }
+
+  render() {
+    return (
+      <div>
+        <Otsikko nimi="anna palautetta" />
+        <Palaute lisaaHyva={this.lisaaHyva} lisaaNeutraali={this.lisaaNeutraali} lisaaHuono={this.lisaaHuono} />
+        <Otsikko nimi="statistiikka" />
+        <Statistiikka palautteet={this.state} />        
+      </div>
+    )
+  }
 }
 
 ReactDOM.render(
