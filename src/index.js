@@ -6,7 +6,7 @@ const Header = ({name}) => (
 )
 
 const Statistic = ({arvosana, maara}) => (
-  <p>{arvosana} {maara}</p>
+  <tr><td>{arvosana}</td><td>{maara}</td></tr>
 )
 
 const Statistics = ({hyva, neutraali, huono}) => {
@@ -24,11 +24,15 @@ const Statistics = ({hyva, neutraali, huono}) => {
   return (
     <div>
       <Header name="statistiikka" />
-      <Statistic arvosana="hyvä" maara={hyva} />
-      <Statistic arvosana="neutraali" maara={neutraali} />
-      <Statistic arvosana="huono" maara={huono} />
-      <Statistic arvosana="keskiarvo" maara={keskiarvo} />
-      <Statistic arvosana="positiivisia" maara={positiivisiaProsentti + " %"} />
+      <table>
+        <tbody>
+          <Statistic arvosana="hyvä" maara={hyva} />
+          <Statistic arvosana="neutraali" maara={neutraali} />
+          <Statistic arvosana="huono" maara={huono} />
+          <Statistic arvosana="keskiarvo" maara={keskiarvo} />
+          <Statistic arvosana="positiivisia" maara={positiivisiaProsentti + " %"} />
+        </tbody>
+      </table>
     </div>
   )
 }
