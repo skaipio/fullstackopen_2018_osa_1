@@ -9,12 +9,20 @@ const Osa = ({arvosana, maara}) => (
   <p>{arvosana} {maara}</p>
 )
 
-const Statistiikka = ({hyva, neutraali, huono}) =>
-  <div>
-    <Osa arvosana="hyvä" maara={hyva} />
-    <Osa arvosana="neutraali" maara={neutraali} />
-    <Osa arvosana="huono" maara={huono} />
-  </div>
+const Statistiikka = ({hyva = 0, neutraali = 0, huono = 0}) => {
+  const yhteensa = hyva + neutraali + huono
+  const keskiarvo = yhteensa !== 0 ? (hyva - huono) / yhteensa : 0
+  const positiivisiaProsentti = yhteensa !== 0 ? hyva / yhteensa : 0
+  return (
+    <div>
+      <Osa arvosana="hyvä" maara={hyva} />
+      <Osa arvosana="neutraali" maara={neutraali} />
+      <Osa arvosana="huono" maara={huono} />
+      <Osa arvosana="keskiarvo" maara={keskiarvo} />
+      <Osa arvosana="positiivisia" maara={positiivisiaProsentti + " %"} />
+    </div>
+  )
+}
 
 const Palaute = (props) =>
   <div>
