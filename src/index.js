@@ -1,63 +1,41 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-const Otsikko = (props) => (
-  <h1>{ props.nimi }</h1>
+const Otsikko = ({nimi}) => (
+  <h1>{ nimi }</h1>
 )
 
-const Osa = (props) => (
-  <p>{props.arvosana} {props.maara}</p>
+const Osa = ({arvosana, maara}) => (
+  <p>{arvosana} {maara}</p>
 )
 
-const Statistiikka = (props) => {
-  const {hyva, neutraali, huono} = props.palautteet
-  return (
-    <div>
-      <Osa arvosana="hyvä" maara={hyva} />
-      <Osa arvosana="neutraali" maara={neutraali} />
-      <Osa arvosana="huono" maara={huono} />
-    </div>
-  )
-}
+const Statistiikka = ({hyva, neutraali, huono}) =>
+  <div>
+    <Osa arvosana="hyvä" maara={hyva} />
+    <Osa arvosana="neutraali" maara={neutraali} />
+    <Osa arvosana="huono" maara={huono} />
+  </div>
 
 const Palaute = (props) =>
   <div>
-    <button onClick={props.lisaaHyva}>hyvä</button>
-    <button onClick={props.lisaaNeutraali}>neutraali</button>
-    <button onClick={props.lisaaHuono}>huono</button>
+    <button onClick={() => props.lisaaArvosana('hyva')}>hyvä</button>
+    <button onClick={() => props.lisaaArvosana('neutraali')}>neutraali</button>
+    <button onClick={() => props.lisaaArvosana('huono')}>huono</button>
   </div>
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      hyva: 0,
-      neutraali: 0,
-      huono: 0
+      'hyva': 0,
+      'neutraali': 0,
+      'huono': 0
     }
   }
 
-  lisaaHyva = () => {
+  lisaaArvosana = (arvosana) => {
     this.setState((prevState) => ({
-      hyva: prevState.hyva + 1,
-      neutraali: prevState.neutraali,
-      huono: prevState.huono
-    }))
-  }
-
-  lisaaNeutraali = () => {
-    this.setState((prevState) => ({
-      hyva: prevState.hyva,
-      neutraali: prevState.neutraali + 1,
-      huono: prevState.huono
-    }))
-  }
-
-  lisaaHuono = () => {
-    this.setState((prevState) => ({
-      hyva: prevState.hyva,
-      neutraali: prevState.neutraali,
-      huono: prevState.huono + 1
+      [arvosana]: prevState[arvosana] + 1
     }))
   }
 
@@ -65,9 +43,9 @@ class App extends React.Component {
     return (
       <div>
         <Otsikko nimi="anna palautetta" />
-        <Palaute lisaaHyva={this.lisaaHyva} lisaaNeutraali={this.lisaaNeutraali} lisaaHuono={this.lisaaHuono} />
+        <Palaute lisaaArvosana={this.lisaaArvosana} />
         <Otsikko nimi="statistiikka" />
-        <Statistiikka palautteet={this.state} />        
+        <Statistiikka hyva={this.state.hyva} neutraali={this.state.neutraali} huono={this.state.huono} />        
       </div>
     )
   }
